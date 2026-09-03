@@ -1,0 +1,37 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "ai-security-gateway-assessment"
+version = "0.1.0"
+description = "Security-focused MCP and LLM gateway assessment"
+requires-python = ">=3.12,<3.14"
+dependencies = [
+  "mcp>=2.0.0,<3.0.0",
+  "pydantic>=2.12,<3.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.4,<10",
+  "pytest-asyncio>=1.2,<2",
+  "ruff>=0.12,<1",
+]
+
+[project.scripts]
+task1-mcp-server = "task1_mcp_server.server:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/task1_mcp_server"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
