@@ -11,7 +11,7 @@ import asyncio
 import json
 import logging
 import sys
-from typing import Any, TypeVar
+from typing import Any
 
 from mcp import MCPError
 from mcp.server import Server, ServerRequestContext
@@ -31,7 +31,6 @@ from .models import GetCustomerRecordInput, TriggerRefundInput
 from .store import create_refund, get_customer
 
 LOGGER = logging.getLogger("task1_mcp_server")
-ModelT = TypeVar("ModelT", bound=BaseModel)
 
 GET_CUSTOMER_RECORD = Tool(
     name="get_customer_record",
@@ -61,7 +60,9 @@ def configure_logging() -> None:
     LOGGER.propagate = False
 
 
-def _validate(model: type[ModelT], arguments: dict[str, Any] | None) -> ModelT:
+def _validate[ModelT: BaseModel](
+    model: type[ModelT], arguments: dict[str, Any] | None
+) -> ModelT:
     """Validate a tools/call argument object or raise JSON-RPC Invalid params."""
 
     try:
