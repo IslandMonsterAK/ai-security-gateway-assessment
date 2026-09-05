@@ -129,6 +129,7 @@ async def call_tool(ctx: ServerRequestContext, params: CallToolRequestParams) ->
 
 server = Server(
     "ai-security-gateway-task1",
+    version="0.1.0",
     on_list_tools=list_tools,
     on_call_tool=call_tool,
 )

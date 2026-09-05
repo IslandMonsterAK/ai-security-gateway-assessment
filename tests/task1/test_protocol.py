@@ -70,7 +70,8 @@ async def test_real_stdio_transport_survives_startup_logging() -> None:
     )
     async with stdio_client(params) as (read, write):
         async with ClientSession(read, write) as session:
-            await session.initialize()
+            init_result = await session.initialize()
+            assert init_result.server_info.version == "0.1.0"
             tools = await session.list_tools()
 
     assert [tool.name for tool in tools.tools] == ["get_customer_record", "trigger_refund"]
