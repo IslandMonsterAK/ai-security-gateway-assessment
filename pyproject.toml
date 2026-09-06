@@ -26,9 +26,15 @@ dev = [
 task1-mcp-server = "task1_mcp_server.server:main"
 task2-mcp-gateway = "task2_mcp_gateway.app:main"
 task2-mock-downstream = "task2_mcp_gateway.mock_downstream:main"
+task3-guardrail-gateway = "task3_stream_guardrail.app:main"
+task3-mock-provider = "task3_stream_guardrail.mock_provider:main"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/task1_mcp_server", "src/task2_mcp_gateway"]
+packages = [
+  "src/task1_mcp_server",
+  "src/task2_mcp_gateway",
+  "src/task3_stream_guardrail",
+]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
