@@ -8,6 +8,8 @@ version = "0.1.0"
 description = "Security-focused MCP and LLM gateway assessment"
 requires-python = ">=3.12,<3.14"
 dependencies = [
+  "aiosqlite>=0.20,<1.0",
+  "tiktoken>=0.11,<1.0",
   "httpx2>=2.5.0,<3.0.0",
   "mcp>=2.0.0,<3.0.0",
   "pydantic>=2.12,<3.0",
@@ -28,12 +30,15 @@ task2-mcp-gateway = "task2_mcp_gateway.app:main"
 task2-mock-downstream = "task2_mcp_gateway.mock_downstream:main"
 task3-guardrail-gateway = "task3_stream_guardrail.app:main"
 task3-mock-provider = "task3_stream_guardrail.mock_provider:main"
+task4-model-router = "task4_model_router.app:main"
+task4-mock-provider = "task4_model_router.mock_provider:main"
 
 [tool.hatch.build.targets.wheel]
 packages = [
   "src/task1_mcp_server",
   "src/task2_mcp_gateway",
   "src/task3_stream_guardrail",
+  "src/task4_model_router",
 ]
 
 [tool.pytest.ini_options]

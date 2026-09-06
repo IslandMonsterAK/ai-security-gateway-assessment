@@ -9,7 +9,7 @@ This repository is intentionally independent of any employer or client codebase.
 - Task 1 - MCP server with strict validation and stdio transport: implemented and CI verified
 - Task 2 - MCP security gateway proxy: implemented with automated and real HTTP runtime validation
 - Task 3 - streaming PII guardrail: implemented with cross-chunk and real HTTP streaming validation
-- Task 4 - token-aware rate limiting and model fallback: planned
+- Task 4 - SQLite token-aware rate limiting and bounded model fallback: implemented and runtime validated
 
 The implementation favors explicit trust boundaries, fail-closed validation, reproducible tests, and clear evidence for both positive and negative security paths.
 
@@ -99,3 +99,51 @@ Run validation:
 
 See `docs/TASK3_WALKTHROUGH.md` for the streaming algorithm, threat boundary,
 failure behavior, adversarial test strategy, and real timing evidence.
+
+
+## Task 4 quick start
+
+Start the synthetic primary/secondary provider:
+
+    task4-mock-provider
+
+Start the token-aware model gateway in another terminal:
+
+    task4-model-router
+
+Defaults:
+
+    gateway:
+        http://127.0.0.1:8020/v1/chat/completions
+
+    primary:
+        http://127.0.0.1:8021/primary
+
+    secondary:
+        http://127.0.0.1:8021/secondary
+
+    SQLite:
+        data/task4_rate_limit.sqlite3
+
+Optional runtime configuration:
+
+    TASK4_DB_PATH
+    TASK4_PRIMARY_URL
+    TASK4_SECONDARY_URL
+
+Requests use a tenant Bearer key:
+
+    Authorization: Bearer <tenant-key>
+
+The gateway computes the token reservation server-side, enforces a 50,000
+token rolling 60-second limit per tenant, and falls back from the primary
+provider only for HTTP 429 or the 3.0-second primary deadline.
+
+Run validation:
+
+    pytest -q tests/task4
+    ruff check .
+
+See `docs/TASK4_WALKTHROUGH.md` for the concurrency model, SQLite transaction
+boundary, token-budget design, fallback policy, runtime evidence, and
+production considerations.
