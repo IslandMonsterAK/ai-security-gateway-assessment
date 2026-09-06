@@ -8,7 +8,7 @@ This repository is intentionally independent of any employer or client codebase.
 
 - Task 1 - MCP server with strict validation and stdio transport: implemented and CI verified
 - Task 2 - MCP security gateway proxy: implemented with automated and real HTTP runtime validation
-- Task 3 - streaming PII guardrail: planned
+- Task 3 - streaming PII guardrail: implemented with cross-chunk and real HTTP streaming validation
 - Task 4 - token-aware rate limiting and model fallback: planned
 
 The implementation favors explicit trust boundaries, fail-closed validation, reproducible tests, and clear evidence for both positive and negative security paths.
@@ -73,3 +73,29 @@ ruff check .
 
 For the security model, failure paths, runtime evidence, and interview-level
 design rationale, see `docs/TASK2_WALKTHROUGH.md`.
+
+
+## Task 3 quick start
+
+Start the synthetic OpenAI-compatible provider:
+
+    task3-mock-provider
+
+Start the streaming PII guardrail gateway in another terminal:
+
+    task3-guardrail-gateway
+
+Defaults:
+
+    gateway:  http://127.0.0.1:8010/v1/chat/completions
+    provider: http://127.0.0.1:8011/v1/chat/completions
+
+The provider endpoint can be changed with `TASK3_PROVIDER_URL`.
+
+Run validation:
+
+    pytest -q tests/task3
+    ruff check .
+
+See `docs/TASK3_WALKTHROUGH.md` for the streaming algorithm, threat boundary,
+failure behavior, adversarial test strategy, and real timing evidence.
