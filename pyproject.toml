@@ -8,8 +8,11 @@ version = "0.1.0"
 description = "Security-focused MCP and LLM gateway assessment"
 requires-python = ">=3.12,<3.14"
 dependencies = [
+  "httpx2>=2.5.0,<3.0.0",
   "mcp>=2.0.0,<3.0.0",
   "pydantic>=2.12,<3.0",
+  "starlette>=1.0,<2.0",
+  "uvicorn>=0.31.1,<1.0",
 ]
 
 [project.optional-dependencies]
@@ -21,9 +24,11 @@ dev = [
 
 [project.scripts]
 task1-mcp-server = "task1_mcp_server.server:main"
+task2-mcp-gateway = "task2_mcp_gateway.app:main"
+task2-mock-downstream = "task2_mcp_gateway.mock_downstream:main"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/task1_mcp_server"]
+packages = ["src/task1_mcp_server", "src/task2_mcp_gateway"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
